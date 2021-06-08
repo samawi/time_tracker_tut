@@ -13,7 +13,7 @@ class CustomElevatedButton extends StatelessWidget {
   final Color color;
   final double borderRadius;
   final double height;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
