@@ -1,15 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker_tut/app/home_page.dart';
 import 'package:time_tracker_tut/app/sign_in/sign_in_screen.dart';
 import 'package:time_tracker_tut/services/auth.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({Key? key, required this.auth}) : super(key: key);
-  final AuthBase auth;
-
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context, listen: false);
     // listen to authStateChanges stream and rebuilt widget whenever there's
     // an event in the stream
     // Note: stream type is type User
@@ -24,15 +23,11 @@ class LandingPage extends StatelessWidget {
           if (user == null) {
             print('user is null');
             // if user is null, leave this screen and go to SignInScreen
-            return SignInScreen(
-              auth: auth,
-            );
+            return SignInScreen();
           }
           // otherwise (if user is logged in), leave this screen and go to HomePage
           print('user is logged in');
-          return HomePage(
-            auth: auth,
-          );
+          return HomePage();
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           print('ConnectionState is waiting');
         } else if (snapshot.connectionState == ConnectionState.done) {

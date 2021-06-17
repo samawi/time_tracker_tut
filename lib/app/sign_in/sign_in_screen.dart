@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker_tut/app/sign_in/email_sign_in_screen.dart';
 import 'package:time_tracker_tut/app/sign_in/sign_in_button.dart';
 import 'package:time_tracker_tut/app/sign_in/social_sign_in_button.dart';
 import 'package:time_tracker_tut/services/auth.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({Key? key, required this.auth}) : super(key: key);
-  final AuthBase auth;
-
-  Future<void> _signInAnonymously() async {
+  Future<void> _signInAnonymously(BuildContext context) async {
     try {
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signInAnonymously();
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<void> _signInWithGoogle() async {
+  Future<void> _signInWithGoogle(BuildContext context) async {
     try {
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signInWithGoogle();
     } catch (e) {
       print(e.toString());
@@ -26,9 +26,7 @@ class SignInScreen extends StatelessWidget {
 
   void _signInWithEmail(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => EmailSignInScreen(
-        auth: auth,
-      ),
+      builder: (context) => EmailSignInScreen(),
       fullscreenDialog: true,
     ));
   }
@@ -66,7 +64,7 @@ class SignInScreen extends StatelessWidget {
           SocialSignInButton(
             assetName: 'images/google-logo.png',
             text: 'Sign in with Google',
-            onPressed: _signInWithGoogle,
+            onPressed: () => _signInWithGoogle(context),
           ),
           SizedBox(
             height: 8.0,
@@ -103,7 +101,7 @@ class SignInScreen extends StatelessWidget {
           ),
           SignInButton(
             text: 'Go anonymous',
-            onPressed: _signInAnonymously,
+            onPressed: () => _signInAnonymously(context),
             textColor: Colors.black,
             color: Colors.lime.shade300,
           ),
